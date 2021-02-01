@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="board"> 
+	<select id="View" parameterType="String" resultType="boardDTO">
+		SELECT * FROM BOARDTB WHERE BO_NUM = #{BNUM}
+	</select>
+	<update id="upHit" parameterType="String">		
+		UPDATE BOARDTB SET BO_HIT = BO_HIT+1 WHERE BO_NUM= #{BNUM}
+	</update>
+	<select id="CountRow" parameterType="String" resultType="int">
+		SELECT COUNT(BO_NUM) FROM BOARDTB WHERE BO_TYPE = #{type}
+	</select>
+
+	<select id="getBoard" parameterType="hashmap" resultType="boardDTO">
+		SELECT BO_NUM,BO_TYPE,BO_TITLE,MB_NAME,BO_MBCODE,BO_CONTENT,BO_DATE,BO_HIT 
+		FROM (SELECT B.*, ROW_NUMBER() OVER(ORDER BY BO_NUM DESC) AS RN FROM 
+		(SELECT * FROM BOARDTB INNER JOIN KMEMBERS ON KMEMBERS.MB_CODE = BOARDTB.BO_MBCODE) B) 
+		WHERE RN BETWEEN #{pto.gRow_lo} AND #{pto.gRow_Hi} AND BO_TYPE = <include refid="boardType"></include>
+	</select>
+	<sql id="boardType">
+		<choose>
+			<when test="type == 'NT'">'NT'</when>
+			<when test="type == 'JS'">'JS'</when>					
+		</choose>
+	</sql>
+	<insert id="Write" parameterType="boardDTO">
+		INSERT INTO BOARDTB (BO_NUM, BO_TYPE,BO_TITLE,BO_MBCODE,BO_CONTENT,BO_DATE,BO_HIT)
+		VALUES(BNUM.NEXTVAL,#{BO_TYPE},#{BO_TITLE},#{BO_MBCODE},#{BO_CONTENT},DEFAULT,0)
+	</insert>
+	
+	<update id="Modi" parameterType="boardDTO">
+		
+	</update>
+	<delete id="Delete" parameterType="String">
+		
+	</delete>
+	
+
+	
+ </mapper>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

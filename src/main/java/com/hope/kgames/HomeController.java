@@ -35,9 +35,6 @@ public class HomeController {
 		
 		return "home";
 	}
-	@RequestMapping(value= "/joinAndlogin")
-	public String join() {
-		return "member/Join_login";
-	}
+
 	
 }

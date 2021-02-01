@@ -2,9 +2,9 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-<!-- 	<typeAliases>
- 		<typeAlias alias="memDTO" type="com.last.train.dto.MemberDTO"/>
- 		<typeAlias alias="boardDTO" type="com.last.train.dto.BoardDTO"/>
-		<typeAlias alias="pageDTO" type="com.last.train.dto.PageDTO"/>		
-	</typeAliases> -->
+ 	<typeAliases>
+ 		<typeAlias alias="memDTO" type="com.hope.kgames.dto.MemberDTO"/>
+ 		<typeAlias alias="boardDTO" type="com.hope.kgames.dto.BoardDTO"/>
+		<typeAlias alias="pageDTO" type="com.hope.kgames.dto.PageDTO"/>
+	</typeAliases>
 </configuration>

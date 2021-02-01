@@ -27,9 +27,8 @@ width: 199px;
 <body>
     <div class="login-page">
         <div class="form">
-          <form class="register-form" name="regfrom" action="doJoin" method="post">
-            <p>환영 해요!</p>
-            
+          <form class="register-form" id="joinForm" action="doJoin" method="post">
+            <p>환영 해요!</p>            
             <div><input type="text"  placeholder="아이디(필수)" name="userId" id="userId" onkeyup="changedID()"/>
             <button id="overLapBtn" type="button" onclick="idOverLapCheck()">중복확인</button><br></div>
             <span id="idOK"></span><br>
@@ -43,23 +42,33 @@ width: 199px;
             <button type="button" onclick="doJoinBtn()">create</button>
             <p class="message">Already registered? <a href="#">Sign In</a></p>
           </form>
-          <form class="login-form" action="doLogin" method="get">
+
+          <form class="login-form" action="doLogin" method="post">
             <p>어서와요! 기다리고 있었다고요!</p>
             <input type="text" placeholder="아이디" name="userId">
             <input type="password" placeholder="비밀번호" name="userPwd">
-            <button>login</button>
+            <p id="loginResult"></p>
+            <button type="submit">login</button>
             <p class="message">회원이 아니십니까? <a href="#">그렇다면 가입하세요!</a></p>
           </form>
         </div>
       </div>
+
+      
+</body>
       <c:if test="${joinDone eq 'wellDone'}">
       	<script>alert('회원가입 감사합니다.');</script>
       </c:if>
       <c:if test="${outDone eq 'goodBye'}">
       	<script>alert('탈퇴되었습니다.');</script>
       </c:if>
-      
-</body>
+      <c:if test="${not empty loginFail}">
+      	<script>
+	      	loginResult.innerHTML = "아이디나 비밀번호가 틀렸습니다.";
+	      	loginResult.style.color = "#ff0000";
+      	</script>
+      </c:if>
+
 <script>
 $('.message a').click(function(){
    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
@@ -69,6 +78,24 @@ $('.message a').click(function(){
 var idCheckOK = false; //아이디 중복확인 여부 확인
 var passformOK = false; //비밀번호 양식 확인
 var passConfirmOK = false; //비밀번호 일치 체크
+
+function doJoinBtn(){
+	console.log('상태!'+idCheckOK);
+	console.log('상태!'+passformOK );
+	console.log('상태!'+passConfirmOK);
+	if(idCheckOK && passformOK && passConfirmOK){
+		console.log('유효성 검사들 성공');
+		$('#joinForm').submit();
+	}else if(idCheckOK == false){
+		alert('아이디 중복검사를 해주세요!');
+	}else if(passformOK == false || passConfirmOK == false){
+		alert('비밀번호를 확인해주세요 !');
+	} 
+	// 의문 비번,아이디 둘다 체크가 안되어 있으면 어떤것을 alert를 할까 해답: else의 위에서 부터
+	// 회원가입시 아이디가 유효한지 먼저 체크해야되기 때문에 아이디를 첫번째 else로 했음
+	
+	
+}
 
 function changedID(){
 	idCheckOK = false;//아이디 바뀔시 중복 체크해야 가능하게 submit에서 if로 분기
@@ -143,25 +170,6 @@ function pwConfirm(){
 	   }
 
 }
-
-function doJoinBtn(){
-	console.log('상태!'+idCheckOK);
-	console.log('상태!'+passformOK );
-	console.log('상태!'+passConfirmOK);
-	if(idCheckOK && passformOK && passConfirmOK){
-		console.log('유효성 검사들 성공');
-		regfrom.submit();
-	}else if(idCheckOK == false){
-		alert('아이디 중복검사를 해주세요!');
-	}else if(passformOK == false || passConfirmOK == false){
-		alert('비밀번호를 확인해주세요 !');
-	} 
-	// 의문 비번,아이디 둘다 체크가 안되어 있으면 어떤것을 alert를 할까 해답: else의 위에서 부터
-	// 회원가입시 아이디가 유효한지 먼저 체크해야되기 때문에 아이디를 첫번째 else로 했음
-	
-	
-}
-
 
 
 </script>

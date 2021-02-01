@@ -3,5 +3,16 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
  <mapper namespace="member"> 
+	<insert id="join" parameterType="memDTO">
+		INSERT INTO KMEMBERS VALUES(MBCODE.NEXTVAL,#{userId},#{userPwd},#{userName},#{userEmail},#{userBirth},DEFAULT)
+	</insert>
+	<select id="idCheck" parameterType="String" resultType="String">
+		SELECT MB_ID FROM KMEMBERS WHERE MB_ID = #{inputedId}
+	</select>
+	<select id="login" parameterType="memDTO" resultType="memDTO">
+		SELECT MB_CODE AS userCode,MB_ID AS userId,MB_NAME AS userName, MB_ISCOMPANY AS isCompany
+		FROM KMEMBERS WHERE
+		MB_ID = #{userId} AND MB_PWD = #{userPwd}
+	</select>
 
  </mapper>
