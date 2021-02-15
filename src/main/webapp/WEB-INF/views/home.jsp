@@ -17,10 +17,10 @@
 <c:if test="${not empty userName}">
 <a href="logout">로그아웃</a>
 </c:if>
-<c:if test="${isCompany eq 0}">
+<c:if test="${isCompany eq 0 }">
 <a href="shop/joinSeller">판매자가입</a>
 </c:if>
-<c:if test="${isCompany eq 1}">
+<c:if test="${not empty coCode}">
 <a href="shop/myCompany">상점 관리</a>
 </c:if>
 <c:if test="${isCompany eq 2}">

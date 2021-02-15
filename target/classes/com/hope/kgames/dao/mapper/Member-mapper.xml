@@ -14,5 +14,7 @@
 		FROM KMEMBERS WHERE
 		MB_ID = #{userId} AND MB_PWD = #{userPwd}
 	</select>
-
+	<select id="company" parameterType="String" resultType="comDTO">
+		SELECT * FROM COMPANYTB WHERE CO_MBCODE = #{USERCODE}
+	</select>
  </mapper>

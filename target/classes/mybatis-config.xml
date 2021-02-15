@@ -6,5 +6,7 @@
  		<typeAlias alias="memDTO" type="com.hope.kgames.dto.MemberDTO"/>
  		<typeAlias alias="boardDTO" type="com.hope.kgames.dto.BoardDTO"/>
 		<typeAlias alias="pageDTO" type="com.hope.kgames.dto.PageDTO"/>
+		<typeAlias alias="fileDTO" type="com.hope.kgames.dto.UploadFileDTO"/>
+		<typeAlias alias="comDTO" type="com.hope.kgames.dto.CompanyDTO"/>		
 	</typeAliases>
 </configuration>

@@ -4,6 +4,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hope.kgames.dto.CompanyDTO;
 import com.hope.kgames.dto.MemberDTO;
 
 @Repository
@@ -26,6 +27,11 @@ public class MemberDAO {
 		// TODO Auto-generated method stub
 		
 		return sql.selectOne("member.login",mib);
+	}
+
+	public CompanyDTO getCompany(String userCode) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("member.company",userCode);
 	}
 
 }

@@ -1,8 +1,11 @@
 package com.hope.kgames.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -92,10 +95,17 @@ public class BoardService {
 		return mav;
 		
 	}
-	public ModelAndView boardWrite(BoardDTO writeInfo) {
-		mav = new ModelAndView();
+	public ModelAndView boardWrite(BoardDTO writeInfo, List<MultipartFile> files) throws IllegalStateException, IOException {
+		mav = new ModelAndView();			
+		
 		int result = bdao.boardWrite(writeInfo);
+		
+		//업로드의 보드 넘버는 가장 최신 글의 작성자
+		
 		if(result>0) {
+			String bnum = bdao.getBnum(writeInfo.getBO_MBCODE());			
+			int uploadCount = this.imgStore(files,bnum,null);
+			System.out.println("등록갯수?"+uploadCount);
 			mav.setViewName("done");
 		}else {
 			mav.setViewName("Fail");
@@ -103,25 +113,42 @@ public class BoardService {
 		return mav;
 		
 	}
-	public UploadFileDTO imgStore(MultipartFile file) {
-		UploadFileDTO saveFile = new UploadFileDTO();
+	//
+	public int imgStore(List<MultipartFile> files,String bnum,String goCode) throws IllegalStateException, IOException {
 		
+		int uploaded = 0;
+		
+		String originName;
+		String saveFileName;
+		String savePath;
+		
+			
+		for (MultipartFile mf : files) {			
+			UploadFileDTO saveFile = new UploadFileDTO();	
+			
+			//중복방지 정책
+			originName = mf.getOriginalFilename();		
+			saveFileName = System.currentTimeMillis() + "_" + originName;
+			savePath = "G:\\project\\kgames\\src\\main\\webapp\\resources\\File\\" + saveFileName;
+			
+			if(!mf.isEmpty()) {
+				mf.transferTo(new File(savePath));
+			}
+			
+			//db 넘길값 저장
+			saveFile.setFI_NAME(saveFileName);
+			saveFile.setFI_ONAME(originName);
+			saveFile.setFI_URL(savePath);
+			saveFile.setFI_SIZE(mf.getSize());
+			saveFile.setFI_BONUM(bnum);
+			saveFile.setFI_GOCODE(goCode);			
+			int result = bdao.fileStore(saveFile);	
+			//업로드한 파일 갯수
+			uploaded += result;
+		}
 
-		String originName = file.getOriginalFilename();		
-		String saveFileName = System.currentTimeMillis() + "_" + originName;
-		String savePath = "G:\\project\\kgames\\src\\main\\webapp\\resources\\File" + saveFileName;
-		if(!file.isEmpty()) {
-			file.transferTo(new File(savePath));
-		}		
-		saveFile.setFI_NAME(saveFileName);
-		saveFile.setFI_ONAME(originName);
-		saveFile.setFI_URL(savePath);
-		saveFile.setFI_SIZE(file.getSize());
-		
-		saveFile = bdao.imgStore(saveFile);
-		return saveFile;
+		return uploaded;
 	}
-
 	
 	
 }

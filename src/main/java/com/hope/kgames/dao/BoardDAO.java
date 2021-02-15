@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hope.kgames.dto.BoardDTO;
 import com.hope.kgames.dto.PageDTO;
+import com.hope.kgames.dto.UploadFileDTO;
 
 @Repository
 public class BoardDAO {
@@ -40,6 +41,16 @@ public class BoardDAO {
 	public int boardWrite(BoardDTO writeInfo) {
 		// TODO Auto-generated method stub
 		return sql.insert("board.Write",writeInfo);
+	}
+
+	public int fileStore(UploadFileDTO saveFile) {
+		// TODO Auto-generated method stub
+		return sql.insert("board.fileStore",saveFile);
+	}
+
+	public String getBnum(String BONUM) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("board.getBnum",BONUM);
 	}
 	
 	

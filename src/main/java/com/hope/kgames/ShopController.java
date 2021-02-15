@@ -33,4 +33,8 @@ public class ShopController {
 		return "shop/MyCompany";
 		
 	}
+	@RequestMapping(value="test")
+	public void test() {
+		System.out.println("test람쥐");
+	}
 }

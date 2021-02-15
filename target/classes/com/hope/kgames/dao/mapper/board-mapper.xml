@@ -29,7 +29,30 @@
 		INSERT INTO BOARDTB (BO_NUM, BO_TYPE,BO_TITLE,BO_MBCODE,BO_CONTENT,BO_DATE,BO_HIT)
 		VALUES(BNUM.NEXTVAL,#{BO_TYPE},#{BO_TITLE},#{BO_MBCODE},#{BO_CONTENT},DEFAULT,0)
 	</insert>
-	
+	<select id="getBnum" parameterType="String" resultType="String">
+		SELECT MAX(BO_NUM) FROM BOARDTB WHERE BO_MBCODE = #{BO_MBCODE}
+	</select>
+	<insert id="fileStore" parameterType="fileDTO">
+		INSERT INTO FILETB(FI_CODE,FI_ONAME,FI_NAME,FI_SIZE,FI_GOCODE,FI_BONUM,FI_URL)
+		VALUES(FICODE.NEXTVAL,#{FI_ONAME},#{FI_NAME},#{FI_SIZE},
+		<choose>
+			<when test='FI_GOCODE == null'>
+			DEFAULT,
+			</when>
+			<otherwise>
+			#{FI_GOCODE},
+			</otherwise>
+		</choose>
+		<choose>
+			<when test='FI_BONUM == null'>
+			DEFAULT,
+			</when>
+			<otherwise>
+			#{FI_BONUM},
+			</otherwise>
+		</choose>
+		#{FI_URL})
+	</insert>
 	<update id="Modi" parameterType="boardDTO">
 		
 	</update>
